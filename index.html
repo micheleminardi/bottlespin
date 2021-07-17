@@ -7,6 +7,7 @@
     <title>BottleSpin</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link
       href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
       rel="stylesheet"
@@ -141,9 +142,15 @@
       partecipanti = [];
       document
         .getElementsByClassName("adder")[0]
-        .addEventListener("click", () => {
-          nome = prompt("inserisci il nome del partecipante");
-          if (nome !== "" && nome !== "null") {
+        .addEventListener("click", async () => {
+          const { value: nome } = await Swal.fire({
+            title: "Inserisci il nome del partecipante",
+            input: "text",
+            inputLabel: "Nome",
+            inputPlaceholder: "Scrivi il nome",
+          });
+
+          if (nome) {
             if (!partecipanti.includes(nome)) {
               partecipanti.push(nome);
               document.getElementsByTagName(
@@ -157,6 +164,18 @@
                   ev.target.remove();
                 });
               }
+
+              Swal.fire(
+                "Fatto",
+                nome + " é stato aggiunto al gioco",
+                "success"
+              );
+            } else {
+              Swal.fire(
+                "Mmmm",
+                nome + " esiste già tra la lista dei partecipanti",
+                "error"
+              );
             }
           }
         });
@@ -185,7 +204,11 @@
         });
 
       function winner() {
-        alert(partecipanti[randomTime(0, partecipanti.length - 1)]);
+        Swal.fire({
+          title: partecipanti[randomTime(0, partecipanti.length - 1)],
+          imageUrl:
+            "https://i.pinimg.com/originals/46/f0/2b/46f02bc44d0357f7ed8a1e9f07fdc75a.gif",
+        });
       }
     </script>
   </body>
