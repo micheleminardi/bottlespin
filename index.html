@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BottleSpin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Patrick Hand", cursive;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        justify-content: stretch;
+      }
+      nomi {
+        padding: 10px;
+        height: 18vh;
+        line-height: 37px;
+        overflow: hidden;
+        overflow-y: hidden;
+        overflow-y: scroll;
+      }
+      adder {
+        width: 190px;
+        height: 35px;
+        border-radius: 23px;
+        background-color: red;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+      adder:active {
+        background-color: red;
+        color: white;
+      }
+      nome {
+        background-color: gainsboro;
+        border-radius: 29px;
+        padding: 7px;
+        color: #474646;
+        margin-right: 5px;
+        cursor: pointer;
+        text-justify: inter-word;
+        word-break: break-all;
+      }
+      bottiglia {
+        display: flex;
+        justify-content: center;
+        height: 46vh;
+      }
+      spin {
+        display: flex;
+        justify-content: center;
+        height: 6vh;
+        margin-top: 70px;
+      }
+      add {
+        display: flex;
+        justify-content: center;
+        height: 15vh;
+      }
+      .adder {
+        width: 190px;
+        height: 35px;
+        border-radius: 23px;
+        background-color: red;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+      .adder:active {
+        width: 190px;
+        height: 35px;
+        border-radius: 23px;
+        background-color: blue;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+      .spinner {
+        width: 190px;
+        height: 35px;
+        border-radius: 23px;
+        background-color: red;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+      .spinner:active {
+        width: 190px;
+        height: 35px;
+        border-radius: 23px;
+        background-color: blue;
+        color: white;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <nomi>
+      <lista></lista>
+    </nomi>
+    <bottiglia><img style="height: 100%" src="bottle.png" alt="" /></bottiglia>
+    <spin>
+      <button class="spinner">Spinner</button>
+    </spin>
+    <add>
+      <button class="adder">Aggiungi Partecipante</button>
+    </add>
+
+    <script>
+      Array.prototype.remove = function () {
+        var what,
+          a = arguments,
+          L = a.length,
+          ax;
+        while (L && this.length) {
+          what = a[--L];
+          while ((ax = this.indexOf(what)) !== -1) {
+            this.splice(ax, 1);
+          }
+        }
+        return this;
+      };
+      function randomTime(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+      }
+      partecipanti = [];
+      document
+        .getElementsByClassName("adder")[0]
+        .addEventListener("click", () => {
+          nome = prompt("inserisci il nome del partecipante");
+          if (nome !== "" && nome !== "null") {
+            if (!partecipanti.includes(nome)) {
+              partecipanti.push(nome);
+              document.getElementsByTagName(
+                "lista"
+              )[0].innerHTML += `<nome>${nome}</nome>`;
+
+              arr = document.getElementsByTagName("nome");
+              for (elem of arr) {
+                elem.addEventListener("click", (ev) => {
+                  partecipanti.remove(ev.target.innerText);
+                  ev.target.remove();
+                });
+              }
+            }
+          }
+        });
+
+      document
+        .getElementsByClassName("spinner")[0]
+        .addEventListener("click", () => {
+          deg = 0;
+          vel = 5;
+          stopping = false;
+          setTimeout(() => {
+            stopping = true;
+          }, randomTime(2500, 7000));
+          myInterval = setInterval(() => {
+            document.getElementsByTagName("img")[0].style.transform =
+              "rotate(" + deg + "deg)";
+            deg += vel;
+            if (stopping) {
+              vel = vel - 0.1;
+              if (vel <= 0) {
+                clearInterval(myInterval);
+                winner();
+              }
+            }
+          }, 25);
+        });
+
+      function winner() {
+        alert(partecipanti[randomTime(0, partecipanti.length - 1)]);
+      }
+    </script>
+  </body>
+</html>
